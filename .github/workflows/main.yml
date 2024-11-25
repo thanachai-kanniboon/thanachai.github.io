@@ -1,0 +1,29 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # หรือชื่อ branch ที่คุณใช้
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7  # หรือเวอร์ชันที่คุณต้องการ
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install
+      - name: Build the site
+        run: |
+          bundle exec jekyll build
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # หรือชื่อ branch ที่คุณต้องการใช้งาน GitHub Pages
+          folder: _site  # โฟลเดอร์ที่เก็บไฟล์เว็บไซต์
